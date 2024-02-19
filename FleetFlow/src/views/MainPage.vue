@@ -2,7 +2,7 @@
   <div>
     <label>
       {{ t('language') }}:
-      <select id="select" v-model="locale">
+      <select v-model="locale">
         <option value="en">
           en
         </option>
