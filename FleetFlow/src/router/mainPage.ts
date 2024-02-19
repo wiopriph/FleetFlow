@@ -1,5 +1,5 @@
-import MainPage from "@/views/MainPage.vue"
-import { RouterNames } from "@/router/constants";
+import MainPage from '@/views/MainPage.vue';
+import { RouterNames } from '@/router/constants';
 
 export default {
   path: '',

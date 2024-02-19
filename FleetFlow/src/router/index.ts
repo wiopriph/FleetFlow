@@ -5,7 +5,7 @@ import Page500 from '@/views/error/Page500.vue';
 import Page404 from '@/views/error/Page404.vue';
 import mainPage from '@/router/mainPage';
 
-import {RouterNames} from '@/router/constants';
+import { RouterNames } from '@/router/constants';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -33,7 +33,7 @@ const router = createRouter({
         },
       ],
     },
-  ]
-})
+  ],
+});
 
-export default router
+export default router;

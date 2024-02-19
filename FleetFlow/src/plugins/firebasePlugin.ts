@@ -1,6 +1,6 @@
 import { type App } from 'vue';
 import { initializeApp } from 'firebase/app';
-import { VueFire } from 'vuefire'
+import { VueFire } from 'vuefire';
 
 const firebaseApp = initializeApp({
   // your application settings
@@ -13,5 +13,5 @@ export default (app: App<Element>) => {
     modules: [
       // we will see other modules later on
     ],
-  })
+  });
 };

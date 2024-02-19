@@ -18,9 +18,15 @@
               <span>User</span>
             </span>
           </template>
-          <a-menu-item key="3">Tom</a-menu-item>
-          <a-menu-item key="4">Bill</a-menu-item>
-          <a-menu-item key="5">Alex</a-menu-item>
+          <a-menu-item key="3">
+            Tom
+          </a-menu-item>
+          <a-menu-item key="4">
+            Bill
+          </a-menu-item>
+          <a-menu-item key="5">
+            Alex
+          </a-menu-item>
         </a-sub-menu>
         <a-sub-menu key="sub2">
           <template #title>
@@ -29,8 +35,12 @@
               <span>Team</span>
             </span>
           </template>
-          <a-menu-item key="6">Team 1</a-menu-item>
-          <a-menu-item key="8">Team 2</a-menu-item>
+          <a-menu-item key="6">
+            Team 1
+          </a-menu-item>
+          <a-menu-item key="8">
+            Team 2
+          </a-menu-item>
         </a-sub-menu>
         <a-menu-item key="9">
           <file-outlined />
@@ -46,7 +56,7 @@
           <a-breadcrumb-item>Bill</a-breadcrumb-item>
         </a-breadcrumb>
         <div :style="{ padding: '24px', background: '#fff', minHeight: '360px' }">
-          <router-view/>
+          <router-view />
         </div>
       </a-layout-content>
       <a-layout-footer style="text-align: center">
@@ -56,17 +66,17 @@
   </a-layout>
 </template>
 <script lang="ts" setup>
-  import {
-    PieChartOutlined,
-    DesktopOutlined,
-    UserOutlined,
-    TeamOutlined,
-    FileOutlined,
-  } from '@ant-design/icons-vue';
-  import { ref } from 'vue';
+import {
+  PieChartOutlined,
+  DesktopOutlined,
+  UserOutlined,
+  TeamOutlined,
+  FileOutlined,
+} from '@ant-design/icons-vue';
+import { ref } from 'vue';
 
-  const collapsed = ref<boolean>(false);
-  const selectedKeys = ref<string[]>(['1']);
+const collapsed = ref<boolean>(false);
+const selectedKeys = ref<string[]>(['1']);
 </script>
 
 <style scoped>
