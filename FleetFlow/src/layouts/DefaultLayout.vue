@@ -1,30 +1,16 @@
 <template>
   <a-layout style="min-height: 100vh">
-    <a-layout-header class="header">
-      <div class="logo" />
-      <a-menu
-        v-model:selectedKeys="selectedKeys1"
-        theme="dark"
-        mode="horizontal"
-        :style="{ lineHeight: '64px' }"
-      >
-        <a-menu-item key="1">
-          nav 1
-        </a-menu-item>
-        <a-menu-item key="2">
-          nav 2
-        </a-menu-item>
-        <a-menu-item key="3">
-          nav 3
-        </a-menu-item>
-      </a-menu>
-    </a-layout-header>
-    <a-layout>
-      <a-layout-sider
-        v-model:collapsed="collapsed"
-        collapsible
-      >
-        <a-menu v-model:selectedKeys="selectedKeys" theme="dark" mode="inline">
+    <a-layout-sider
+      v-model:collapsed="collapsed"
+      collapsible
+    >
+      <div class="side-menu">
+        <div class="logo" />
+        <a-menu
+          v-model:selectedKeys="selectedKeys"
+          theme="dark"
+          mode="inline"
+        >
           <a-menu-item key="1">
             <pie-chart-outlined />
             <span>Option 1</span>
@@ -69,12 +55,30 @@
             <span>File</span>
           </a-menu-item>
         </a-menu>
-      </a-layout-sider>
-      <a-layout>
-        <a-layout-content class="main-content-wrapper">
-          <router-view />
-        </a-layout-content>
-      </a-layout>
+      </div>
+    </a-layout-sider>
+    <a-layout>
+      <a-layout-header class="header">
+        <a-menu
+          v-model:selectedKeys="selectedKeys1"
+          theme="dark"
+          mode="horizontal"
+          :style="{ lineHeight: '64px' }"
+        >
+          <a-menu-item key="1">
+            nav 1
+          </a-menu-item>
+          <a-menu-item key="2">
+            nav 2
+          </a-menu-item>
+          <a-menu-item key="3">
+            nav 3
+          </a-menu-item>
+        </a-menu>
+      </a-layout-header>
+      <a-layout-content class="main-content-wrapper">
+        <router-view />
+      </a-layout-content>
     </a-layout>
   </a-layout>
 </template>
@@ -94,10 +98,19 @@ const selectedKeys1 = ref<string[]>(['2']);
 </script>
 <style scoped>
 .logo {
-  float: left;
-  width: 120px;
-  height: 31px;
-  margin: 16px 30px 16px 0;
+  height: 32px;
+  margin: 16px;
   background: rgba(255, 255, 255, 0.3);
+}
+
+.header {
+  padding: 0;
+}
+
+.side-menu {
+  overflow: auto;
+  height: calc(100vh - 50px);
+  position: sticky;
+  top: 0;
 }
 </style>
