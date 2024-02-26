@@ -1,21 +1,12 @@
 <template>
-  <a-table
-    class="main-table-root"
-    sticky
-    :columns="columns"
-    :data-source="data"
-    :scroll="{ x: 1500 }"
-  >
-    <template #bodyCell="{ column }">
-      <template v-if="column.key === 'operation'">
-        <a>action</a>
-      </template>
-    </template>
-  </a-table>
+  <CustomFoolPageTable
+    
+  />
 </template>
 <script lang="ts" setup>
+import CustomFoolPageTable from '@/components/CustomFoolPageTable.vue';
 import type { TableColumnsType } from 'ant-design-vue';
-import { computed, ref, unref } from 'vue';
+import { computed, ref } from 'vue';
 
 const columns = ref<TableColumnsType>([
   {
@@ -95,20 +86,29 @@ for (let i = 0; i < 100; i++) {
 
 const current1 = ref<number>(1);
 const pageSize1 = ref<number>(20);
+const pageSizeOptions = [
+  { value: 10, label: '10 / page' },
+  { value: 20, label: '20 / page' },
+  { value: 30, label: '30 / page' },
+  { value: 50, label: '50 / page' },
+];
 
-const pagination = computed(() => ({
-  current: unref(current1),
-  pageSize: unref(pageSize1),
-}));
+const curData = computed(() => {
+  const start = pageSize1.value * (current1.value - 1);
+  const end = start + pageSize1.value;
+
+  return data.slice(start, end);
+});
 </script>
 
 <style>
-.main-table-root > .ant-table-pagination {
+.table-pagination {
   position: sticky;
   bottom: 0;
   z-index: 100;
   background: white;
   padding: 16px 0;
-
+  display: flex;
+  align-items: center;
 }
 </style>
