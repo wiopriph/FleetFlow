@@ -4,135 +4,86 @@
       sticky
       :columns="columns"
       :data-source="curData"
-      :scroll="{ x: 1500 }"
+      :scroll="scroll"
       :pagination="false"
     >
-      <template #bodyCell="{ column }">
-        <template v-if="column.key === 'operation'">
-          <a>action</a>
-        </template>
+      <template #bodyCell="bodyCellData">
+        <slot name="bodyCell" v-bind="bodyCellData">
+          <template v-if="bodyCellData.column.key === 'operation'">
+            <a>action</a>
+          </template>
+        </slot>
       </template>
     </a-table>
     <div class="table-pagination">
       <a-pagination
-        v-model:current="current"
-        v-model:pageSize="pageSize"
+        v-model:current="currentCounter"
+        v-model:pageSize="pageSizeCounter"
         :show-size-changer="false"
         :total="mainData.length"
       />
       <a-select
-        v-model:value="pageSize"
-        :options="pageSizeOptions"
+        v-model:value="pageSizeCounter"
+        :options="pagination.options"
         placement="topRight"
       />
     </div>
   </div>
 </template>
 <script lang="ts" setup>
-import type { TableColumnsType } from 'ant-design-vue';
 import {
   computed,
   ref,
   watch,
-  onBeforeMount,
+  defineModel,
 } from 'vue';
 
-const columns = ref<TableColumnsType>([
-  {
-    title: 'Full Name',
-    width: 100,
-    dataIndex: 'name',
-    key: 'name',
-    fixed: 'left',
-  },
-  {
-    title: 'Age',
-    width: 100,
-    dataIndex: 'age',
-    key: 'age',
-    fixed: 'left',
-  },
-  {
-    title: 'Column 1',
-    dataIndex: 'address',
-    key: '1',
-    width: 150,
-  },
-  {
-    title: 'Column 2',
-    dataIndex: 'address',
-    key: '2',
-    width: 150,
-  },
-  {
-    title: 'Column 3',
-    dataIndex: 'address',
-    key: '3',
-    width: 150,
-  },
-  {
-    title: 'Column 4',
-    dataIndex: 'address',
-    key: '4',
-    width: 150,
-  },
-  {
-    title: 'Column 5',
-    dataIndex: 'address',
-    key: '5',
-    width: 150,
-  },
-  {
-    title: 'Column 6',
-    dataIndex: 'address',
-    key: '6',
-    width: 150,
-  },
-  {
-    title: 'Column 7',
-    dataIndex: 'address',
-    key: '7',
-    width: 150,
-  },
-  { title: 'Column 8', dataIndex: 'address', key: '8' },
-  {
-    title: 'Action',
-    key: 'operation',
-    fixed: 'right',
-    width: 100,
-  },
-]);
-
 const props = defineProps({
-  tableData: {
-    type: Object,
-    default: () => ({}),
+  dataSource: {
+    type: Array,
+    default: () => ([]),
   },
-  paginationData: {
+  columns: {
+    type: Array,
+    required: true,
+  },
+  scroll: {
     type: Object,
-    default: () => ({}),
+    default: null,
+  },
+  current: {
+    type: Number,
+    default: 1,
+  },
+  pageSize: {
+    type: Number,
+    default: 10,
+  },
+  pagination: {
+    type: Object,
+    default: () => ({
+      options: [
+        { value: 10, label: '10 / page' },
+        { value: 20, label: '20 / page' },
+        { value: 30, label: '30 / page' },
+        { value: 50, label: '50 / page' },
+      ],
+    }),
   },
 });
 
-const mainData = ref<any>([]);
-
-const current = ref<number>(1);
-const pageSize = ref<number>(20);
-const pageSizeOptions = [
-  { value: 10, label: '10 / page' },
-  { value: 20, label: '20 / page' },
-  { value: 30, label: '30 / page' },
-  { value: 50, label: '50 / page' },
-];
+const currentCounter = defineModel<number>('current', { type: Number, default: 1 });
+const pageSizeCounter = defineModel<number>('pageSize', { type: Number, default: 10 });
 
 const start = ref(0);
 const end = ref(0);
 
+const mainData = computed(() => props?.dataSource);
 const curData = computed(() => mainData.value.slice(start.value, end.value));
 
 const getRange = () => {
-  const rStart = pageSize.value * (current.value - 1);
-  const rEnd = rStart + pageSize.value;
+  const rStart = pageSizeCounter.value * (currentCounter.value - 1);
+  const rEnd = rStart + pageSizeCounter.value;
 
   return {
     rStart,
@@ -140,30 +91,16 @@ const getRange = () => {
   };
 };
 
-onBeforeMount(() => {
-  const data: any[] = [];
-  for (let i = 0; i < 100; i++) {
-    data.push({
-      key: i,
-      name: `Edrward ${i}`,
-      age: 32,
-      address: `London Park no. ${i}`,
-    });
-  }
-
-  mainData.value = data;
-});
-
-watch(current, () => {
+watch(currentCounter, () => {
   const { rStart, rEnd } = getRange();
 
   start.value = rStart;
   end.value = rEnd;
 }, { immediate: true });
 
-watch(pageSize, () => {
-  if ((pageSize.value * current.value) > mainData.value.length) {
-    current.value = Math.ceil(mainData.value.length / pageSize.value);
+watch(pageSizeCounter, () => {
+  if ((pageSizeCounter.value * currentCounter.value) > mainData.value.length) {
+    currentCounter.value = Math.ceil(mainData.value.length / pageSizeCounter.value);
   }
 });
 </script>

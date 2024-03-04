@@ -1,12 +1,19 @@
 <template>
   <CustomFoolPageTable
-    
+    v-model:current="current"
+    v-model:page-size="pageSize"
+    :scroll="{ x: 1500 }"
+    :data-source="mainData"
+    :columns="columns"
+    :pagination="{
+      options: pageSizeOptions,
+    }"
   />
 </template>
 <script lang="ts" setup>
 import CustomFoolPageTable from '@/components/CustomFoolPageTable.vue';
 import type { TableColumnsType } from 'ant-design-vue';
-import { computed, ref } from 'vue';
+import { ref, onBeforeMount } from 'vue';
 
 const columns = ref<TableColumnsType>([
   {
@@ -73,19 +80,9 @@ const columns = ref<TableColumnsType>([
     width: 100,
   },
 ]);
-
-const data: any[] = [];
-for (let i = 0; i < 100; i++) {
-  data.push({
-    key: i,
-    name: `Edrward ${i}`,
-    age: 32,
-    address: `London Park no. ${i}`,
-  });
-}
-
-const current1 = ref<number>(1);
-const pageSize1 = ref<number>(20);
+const mainData = ref<any>([]);
+const current = ref<number>(1);
+const pageSize = ref<number>(20);
 const pageSizeOptions = [
   { value: 10, label: '10 / page' },
   { value: 20, label: '20 / page' },
@@ -93,11 +90,18 @@ const pageSizeOptions = [
   { value: 50, label: '50 / page' },
 ];
 
-const curData = computed(() => {
-  const start = pageSize1.value * (current1.value - 1);
-  const end = start + pageSize1.value;
+onBeforeMount(() => {
+  const data: any[] = [];
+  for (let i = 0; i < 100; i++) {
+    data.push({
+      key: i,
+      name: `Edrward ${i}`,
+      age: 32,
+      address: `London Park no. ${i}`,
+    });
+  }
 
-  return data.slice(start, end);
+  mainData.value = data;
 });
 </script>
 
